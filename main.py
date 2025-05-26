@@ -14,13 +14,14 @@ def notify():
     freq = data.get("freq", 0)
     amp = data.get("amp", 0)
 
+    # 偵測主頻 = 100 且振幅 >= 5 就發送 LINE 通知
     if freq == 100 and amp >= 5:
         headers = {
-            "Authorization": f"Bearer {LINE_TOKEN}",
+            "Authorization": "Bearer 你的長效 Channel access token",
             "Content-Type": "application/x-www-form-urlencoded"
         }
         payload = {
-            "message": "ON (主頻 100Hz, 振幅 ≥ 5)"
+            "message": "ON (Frequency = 100Hz, Amplitude ≥ 5)"
         }
         r = requests.post("https://notify-api.line.me/api/notify", headers=headers, data=payload)
         return "Sent" if r.status_code == 200 else "Failed", r.status_code
