@@ -1,9 +1,9 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
 
-# 建議你將 Token 用環境變數儲存，這裡為簡化示範先寫死
+# LINE Notify 權杖
 LINE_TOKEN = "GxKQCTE6XpBYDN9Z/WtWQVAR3WEkAwR/5eGIN2MXlfiXohV3BjxTYalySy2HBN7rLmyaTtMj/ONe+FUCZa3etR5aXqroXqGxyQUkPZ+9Kfwj7X/++HrngGIkT7/bWcKRQAionzH0QC/YByoEmW9rDgdB04t89/1O/w1cDnyilFU="
 
 @app.route("/notify", methods=["POST"])
