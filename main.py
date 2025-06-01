@@ -20,6 +20,7 @@ TO_USER_ID = "Ue428e46d6380ba97aaca7b234375bf3c"
 # 儲存最後一次接收訊號時間與狀態
 last_signal_time = time.time()
 last_flag = None
+empty_sent = False  # 是否已送出 Empty 訊息
 
 def send_line_message(message):
     headers = {
@@ -41,19 +42,23 @@ def send_line_message(message):
 
 # 背景監聽線程：超過 60 秒沒收到資料，顯示 Empty 並傳 LINE
 def monitor_signal():
-    global last_signal_time
+    global last_signal_time, empty_sent
     while True:
-        time.sleep(60)  # ← 將時間從 10 秒改為 60 秒
+        time.sleep(5)  # 每 5 秒檢查一次是否超過 60 秒
         if time.time() - last_signal_time > 60:
-            logging.info("Empty")
-            send_line_message("Empty")
+            if not empty_sent:
+                logging.info("Empty")
+                send_line_message("Empty")
+                empty_sent = True  # 避免重複送
+        else:
+            empty_sent = False  # 一旦收到資料，重設狀態
 
 # 啟動背景監控
 threading.Thread(target=monitor_signal, daemon=True).start()
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    global last_signal_time, last_flag
+    global last_signal_time, last_flag, empty_sent
     data = request.get_json()
     if not data or 'flag' not in data:
         logging.warning("Missing 'flag' in request.")
@@ -61,6 +66,7 @@ def webhook():
 
     flag = data['flag']
     last_signal_time = time.time()
+    empty_sent = False  # 有資料就重設
 
     if flag == 1:
         logging.info("Motor ON")
