@@ -15,7 +15,7 @@ LINE_NOTIFY_URL = "https://api.line.me/v2/bot/message/push"
 LINE_ACCESS_TOKEN = "GxKQCTE6XpBYDN9Z/WtWQVAR3WEkAwR/5eGIN2MXlfiXohV3BjxTYalySy2HBN7rLmyaTtMj/ONe+FUCZa3etR5aXqroXqGxyQUkPZ+9Kfwj7X/++HrngGIkT7/bWcKRQAionzH0QC/YByoEmW9rDgdB04t89/1O/w1cDnyilFU="
 
 # ➤ 改為你的用戶 ID 或群組 ID（推播對象）
-TO_USER_ID = "Ue428e46d6380ba97aaca7b234375bf3c"  # ✅ ← 請你提供
+TO_USER_ID = "Ue428e46d6380ba97aaca7b234375bf3c"
 
 # 儲存最後一次接收訊號時間與狀態
 last_signal_time = time.time()
