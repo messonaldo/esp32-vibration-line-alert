@@ -40,12 +40,12 @@ def send_line_message(message):
     if response.status_code != 200:
         logging.warning(f"LINE message failed: {response.text}")
 
-# 背景監聽線程：超過 60 秒沒收到資料，顯示 Empty 並傳 LINE
+# 背景監聽線程：超過 600 秒沒收到資料，顯示 Empty 並傳 LINE
 def monitor_signal():
     global last_signal_time, empty_sent
     while True:
-        time.sleep(5)  # 每 5 秒檢查一次是否超過 60 秒
-        if time.time() - last_signal_time > 60:
+        time.sleep(5)  # 每 5 秒檢查一次是否超過 600 秒
+        if time.time() - last_signal_time > 600:
             if not empty_sent:
                 logging.info("Empty")
                 send_line_message("Empty")
