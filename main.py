@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(message)s')
 LINE_NOTIFY_URL = "https://api.line.me/v2/bot/message/push"
 LINE_ACCESS_TOKEN = "GxKQCTE6XpBYDN9Z/WtWQVAR3WEkAwR/5eGIN2MXlfiXohV3BjxTYalySy2HBN7rLmyaTtMj/ONe+FUCZa3etR5aXqroXqGxyQUkPZ+9Kfwj7X/++HrngGIkT7/bWcKRQAionzH0QC/YByoEmW9rDgdB04t89/1O/w1cDnyilFU="
 
-# ➤ 改為你的用戶 ID 或群組 ID（推播對象）
+# 推播對象 LINE 使用者 ID
 TO_USER_ID = "Ue428e46d6380ba97aaca7b234375bf3c"
 
 # 儲存最後一次接收訊號時間與狀態
@@ -39,12 +39,12 @@ def send_line_message(message):
     if response.status_code != 200:
         logging.warning(f"LINE message failed: {response.text}")
 
-# 背景監聽線程：超過 10 秒沒收到資料，顯示 Empty 並傳 LINE
+# 背景監聽線程：超過 60 秒沒收到資料，顯示 Empty 並傳 LINE
 def monitor_signal():
     global last_signal_time
     while True:
-        time.sleep(10)
-        if time.time() - last_signal_time > 10:
+        time.sleep(60)  # ← 將時間從 10 秒改為 60 秒
+        if time.time() - last_signal_time > 60:
             logging.info("Empty")
             send_line_message("Empty")
 
