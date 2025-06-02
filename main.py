@@ -35,8 +35,8 @@ def send_telegram_message(message):
 def monitor_signal():
     global last_signal_time
     while True:
-        time.sleep(10)  # 每 10 秒檢查一次是否超過 300 秒
-        if time.time() - last_signal_time > 300:
+        time.sleep(5)  # 每 10 秒檢查一次是否超過 300 秒
+        if time.time() - last_signal_time > 3000:
             logging.info("Empty")
             send_telegram_message("Empty")
             last_signal_time = time.time()  # 避免每 10 秒都發一次 "Empty"
