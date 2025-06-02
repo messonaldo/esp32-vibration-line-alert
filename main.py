@@ -31,14 +31,15 @@ def send_telegram_message(message):
     except Exception as e:
         logging.warning(f"Telegram message exception: {e}")
 
-# 背景監聽線程：超過 60 秒沒收到資料，顯示 Empty 並傳 Telegram 訊息
+# 背景監聽線程：超過 300 秒沒收到資料，顯示 Empty 並傳 Telegram 訊息
 def monitor_signal():
     global last_signal_time
     while True:
-        time.sleep(60)
-        if time.time() - last_signal_time > 60:
+        time.sleep(10)  # 每 10 秒檢查一次是否超過 300 秒
+        if time.time() - last_signal_time > 300:
             logging.info("Empty")
             send_telegram_message("Empty")
+            last_signal_time = time.time()  # 避免每 10 秒都發一次 "Empty"
 
 # 啟動背景監控
 threading.Thread(target=monitor_signal, daemon=True).start()
@@ -60,7 +61,7 @@ def webhook():
             send_telegram_message("Motor ON")
     elif flag == 0:
         logging.info("Motor OFF")
-        # flag=0 時不發送訊息
+        # flag = 0 不發送通知
     else:
         logging.warning(f"Unknown flag value received: {flag}")
 
