@@ -32,12 +32,12 @@ def send_telegram_message(message):
     except Exception as e:
         logging.warning(f"Telegram message exception: {e}")
 
-# 背景監聽線程：超過 300 秒沒收到資料，顯示 Empty 並傳 Telegram 訊息
+# 背景監聽線程：超過 600 秒沒收到資料，顯示 Empty 並傳 Telegram 訊息
 def monitor_signal():
     global last_signal_time, empty_sent
     while True:
         time.sleep(5)
-        if time.time() - last_signal_time > 300 and not empty_sent:
+        if time.time() - last_signal_time > 600 and not empty_sent:
             logging.info("Empty")
             send_telegram_message("Empty")
             empty_sent = True  # 防止重複發送
