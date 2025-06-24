@@ -17,7 +17,7 @@ TELEGRAM_CHAT_ID = "1989734396"  # Telegram User ID
 # 儲存最後一次接收訊號時間與狀態
 last_signal_time = time.time()
 last_flag = None
-empty_sent = False  # 防止重複推播 "Empty"
+empty_sent = False  # 確保 Empty 僅發送一次
 
 def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
@@ -40,7 +40,7 @@ def monitor_signal():
         if time.time() - last_signal_time > 300 and not empty_sent:
             logging.info("Empty")
             send_telegram_message("Empty")
-            empty_sent = True  # 避免每 5 秒都發一次 "Empty"
+            empty_sent = True  # 防止重複發送
 
 # 啟動背景監控
 threading.Thread(target=monitor_signal, daemon=True).start()
@@ -51,21 +51,21 @@ def webhook():
     data = request.get_json()
     if not data or 'flag' not in data or 'az' not in data:
         logging.warning("Missing 'flag' or 'az' in request.")
-        return {"status": "error", "message": "No flag or az provided"}, 400
+        return {"status": "error", "message": "Missing flag or az"}, 400
 
     flag = data['flag']
-    az = data['az']  # 例如 az = 1.23
+    az = data['az']
     last_signal_time = time.time()
-    empty_sent = False  # 收到資料就重設 Empty 狀態
+    empty_sent = False  # 有資料就重設 Empty 狀態
 
     if flag == 1:
-        msg = f"Motor ON, az = {az:.2f}"
-        logging.info(msg)
+        log_msg = f"Motor ON, az = {az}"
+        logging.info(log_msg)
         if last_flag != 1:
-            send_telegram_message(msg)
+            send_telegram_message(log_msg)
     elif flag == 0:
-        msg = f"Motor OFF, az = {az:.2f}"
-        logging.info(msg)
+        log_msg = f"Motor OFF, az = {az}"
+        logging.info(log_msg)
         # flag = 0 不發送 Telegram 訊息
     else:
         logging.warning(f"Unknown flag value received: {flag}")
