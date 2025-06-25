@@ -60,7 +60,8 @@ def webhook():
 
     if flag == 1:
         log_msg = f"Motor ON, az = {az}"
-        logging.info(log_msg)
+        telegram_msg = f"Motor ON"
+        logging.info(telegram_msg)
         if last_flag != 1:
             send_telegram_message(log_msg)
     elif flag == 0:
