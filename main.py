@@ -11,8 +11,8 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(message)s')
 
 # Telegram Bot 資訊
-TELEGRAM_BOT_TOKEN = "7837165005:AAEI7SRhFPEsAX4dERqduwSQZwaE-vVaFVw"
-TELEGRAM_CHAT_ID = "1989734396"  # Telegram User ID
+TELEGRAM_BOT_TOKEN = "7614581082:AAHt4l72rO5G-dJXsBYPje13c0aviLBCl5w"
+TELEGRAM_CHAT_ID = "7040024260"  # Telegram User ID
 
 # 儲存最後一次接收訊號時間與狀態
 last_signal_time = time.time()
